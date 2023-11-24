@@ -1,0 +1,12 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    command : bash -c 'cd app && yarn dev'
+    volumes:
+      - ./app:/app
+    ports:
+      - "3000"
