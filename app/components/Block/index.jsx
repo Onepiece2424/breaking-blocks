@@ -3,37 +3,56 @@
 import { useEffect, useRef } from 'react';
 
 const BlockMain = () => {
-
-  const canvasRef = useRef(null);
+  const ballRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = ballRef.current;
     const ctx = canvas.getContext('2d');
 
-    // 描画の処理
-    ctx.beginPath();
-    ctx.rect(20, 40, 50, 50);
-    ctx.fillStyle = "#FF0000";
-    ctx.fill();
-    ctx.closePath();
+    // ボールの初期設定
+    const ballRadius = 10;
+    let x = canvas.width / 2;
+    let y = canvas.height - 30;
+    let dx = 2;
+    let dy = -2;
 
-    ctx.beginPath();
-    ctx.arc(240, 160, 20, 0, Math.PI*2, false);
-    ctx.fillStyle = "green";
-    ctx.fill();
-    ctx.closePath();
+    const drawBall = () => {
+      ctx.beginPath();
+      ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
+    };
 
-    ctx.beginPath();
-    ctx.rect(160, 10, 100, 40);
-    ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-    ctx.stroke();
-    ctx.closePath();
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+
+      if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+      }
+      if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+        dy = -dy;
+      }
+
+      x += dx;
+      y += dy;
+    };
+
+    // 毎フレームごとにボールを描画
+    const intervalId = setInterval(() => {
+      draw();
+    }, 10);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
-    <>
-     <canvas ref={canvasRef} width={300} height={200} />
-    </>
+    <div className='main-content'>
+     <canvas ref={ballRef} width={300} height={200} style={{ border: '1px solid #000' }} />
+    </div>
   )
 }
 
