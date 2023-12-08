@@ -19,6 +19,7 @@ const BlockMain = () => {
     },
   });
 
+  // ボールを描画
   const drawBall = (ctx, ball) => {
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -27,6 +28,7 @@ const BlockMain = () => {
     ctx.closePath();
   };
 
+  // パドルを描画
   const drawPaddle = (ctx, paddle, canvas) => {
     ctx.beginPath();
     ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width, paddle.height);
@@ -35,6 +37,7 @@ const BlockMain = () => {
     ctx.closePath();
   };
 
+  // ゲームのアニメーション（ボールの動き、衝突判定など）
   const draw = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -77,6 +80,7 @@ const BlockMain = () => {
     requestAnimationFrame(draw);
   };
 
+  // マウスの位置に応じてパドルの位置を更新
   const mouseMoveHandler = (e) => {
     const canvas = canvasRef.current;
     const { paddle } = gameRef.current;
