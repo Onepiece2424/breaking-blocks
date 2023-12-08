@@ -80,6 +80,7 @@ const BlockMain = () => {
         ball.dy = -ball.dy;
       } else {
         // ゲームオーバーの処理
+        alert('GAME OVER')
         document.location.reload();
         return;
       }
