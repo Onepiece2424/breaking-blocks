@@ -64,9 +64,10 @@ const BlockMain = () => {
       ) {
         ball.dy = -ball.dy;
       } else {
-        // ゲームオーバーの処理（ここでは初期位置にボールを戻す）
-        ball.x = canvas.width / 2;
-        ball.y = canvas.height - 30;
+        
+        // ゲームオーバーの処理
+        document.location.reload();
+        return
       }
     }
 
