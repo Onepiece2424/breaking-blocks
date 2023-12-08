@@ -1,24 +1,44 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const BlockMain = () => {
-  const ballRef = useRef(null);
+  const canvasRef = useRef(null);
+  const gameRef = useRef({
+    ball: {
+      x: 0,
+      y: 0,
+      radius: 10,
+      dx: 2,
+      dy: -2,
+    },
+    paddle: {
+      height: 10,
+      width: 75,
+      x: 0,
+    },
+  });
 
   useEffect(() => {
-    const canvas = ballRef.current;
+    const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    const { ball, paddle } = gameRef.current;
 
-    // ボールの初期設定
-    const ballRadius = 10;
-    let x = canvas.width / 2;
-    let y = canvas.height - 30;
-    let dx = 2;
-    let dy = -2;
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height - 30;
+    paddle.x = (canvas.width - paddle.width) / 2;
 
     const drawBall = () => {
       ctx.beginPath();
-      ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
+    };
+
+    const drawPaddle = () => {
+      ctx.beginPath();
+      ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width, paddle.height);
       ctx.fillStyle = "#0095DD";
       ctx.fill();
       ctx.closePath();
@@ -27,33 +47,63 @@ const BlockMain = () => {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBall();
+      drawPaddle();
 
-      if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-        dx = -dx;
-      }
-      if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-        dy = -dy;
+      if (
+        ball.x + ball.dx > canvas.width - ball.radius ||
+        ball.x + ball.dx < ball.radius
+      ) {
+        ball.dx = -ball.dx;
       }
 
-      x += dx;
-      y += dy;
+      if (ball.y + ball.dy < ball.radius) {
+        ball.dy = -ball.dy;
+      } else if (ball.y + ball.dy > canvas.height - ball.radius) {
+        // パドルに当たった場合
+        if (
+          ball.x > paddle.x &&
+          ball.x < paddle.x + paddle.width
+        ) {
+          ball.dy = -ball.dy;
+        } else {
+          // ゲームオーバーの処理（ここでは初期位置にボールを戻す）
+          ball.x = canvas.width / 2;
+          ball.y = canvas.height - 30;
+        }
+      }
+
+      if (paddle.x + ball.dx > 0 && paddle.x + paddle.width + ball.dx < canvas.width) {
+        paddle.x += ball.dx;
+      }
+
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      requestAnimationFrame(draw);
     };
 
-    // 毎フレームごとにボールを描画
-    const intervalId = setInterval(() => {
-      draw();
-    }, 10);
+    const mouseMoveHandler = (e) => {
+      const relativeX = e.clientX - canvas.offsetLeft;
+      if (relativeX > 0 && relativeX < canvas.width) {
+        paddle.x = relativeX - paddle.width / 2;
+      }
+    };
 
+    canvas.addEventListener("mousemove", mouseMoveHandler);
+
+    draw();
+
+    // コンポーネントがアンマウントされたらイベントリスナーを削除
     return () => {
-      clearInterval(intervalId);
+      canvas.removeEventListener("mousemove", mouseMoveHandler);
     };
   }, []);
 
   return (
     <div className='main-content'>
-     <canvas ref={ballRef} width={300} height={200} style={{ border: '1px solid #000' }} />
+      <canvas ref={canvasRef} width={300} height={200} style={{ border: '1px solid #000' }} />
     </div>
   )
 }
 
-export default BlockMain
+export default BlockMain;
