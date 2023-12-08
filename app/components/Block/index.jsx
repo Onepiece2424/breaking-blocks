@@ -100,10 +100,6 @@ const BlockMain = () => {
       }
     });
 
-    if (paddle.x + ball.dx > 0 && paddle.x + paddle.width + ball.dx < canvas.width) {
-      paddle.x += ball.dx;
-    }
-
     ball.x += ball.dx;
     ball.y += ball.dy;
 
