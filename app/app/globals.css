@@ -102,7 +102,8 @@ a {
 }
 
 .main-content {
-  margin: 200px 500px;
+  margin: 200px 600px;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: dark) {
