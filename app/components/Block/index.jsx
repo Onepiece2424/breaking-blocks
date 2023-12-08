@@ -17,6 +17,7 @@ const BlockMain = () => {
       width: 75,
       x: 0,
     },
+    blocks: [], // ブロックを管理する配列
   });
 
   // ボールを描画
@@ -37,15 +38,29 @@ const BlockMain = () => {
     ctx.closePath();
   };
 
+  // ブロックを描画
+  const drawBlocks = (ctx, blocks) => {
+    blocks.forEach((block) => {
+      if (!block.isDestroyed) {
+        ctx.beginPath();
+        ctx.rect(block.x, block.y, block.width, block.height);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+      }
+    });
+  };
+
   // ゲームのアニメーション（ボールの動き、衝突判定など）
   const draw = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const { ball, paddle } = gameRef.current;
+    const { ball, paddle, blocks } = gameRef.current;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall(ctx, ball);
     drawPaddle(ctx, paddle, canvas);
+    drawBlocks(ctx, blocks);
 
     if (
       ball.x + ball.dx > canvas.width - ball.radius ||
@@ -64,12 +79,26 @@ const BlockMain = () => {
       ) {
         ball.dy = -ball.dy;
       } else {
-        
         // ゲームオーバーの処理
         document.location.reload();
-        return
+        return;
       }
     }
+
+    // ブロックとの当たり判定
+    blocks.forEach((block) => {
+      if (!block.isDestroyed) {
+        if (
+          ball.x > block.x &&
+          ball.x < block.x + block.width &&
+          ball.y > block.y &&
+          ball.y < block.y + block.height
+        ) {
+          block.isDestroyed = true;
+          ball.dy = -ball.dy;
+        }
+      }
+    });
 
     if (paddle.x + ball.dx > 0 && paddle.x + paddle.width + ball.dx < canvas.width) {
       paddle.x += ball.dx;
@@ -99,6 +128,21 @@ const BlockMain = () => {
     ball.y = canvas.height - 30;
     paddle.x = (canvas.width - paddle.width) / 2;
 
+    // ブロックの初期化（例: 5行 x 5列のブロック）
+    const blockRowCount = 5;
+    const blockColumnCount = 5;
+    for (let c = 0; c < blockColumnCount; c++) {
+      for (let r = 0; r < blockRowCount; r++) {
+        gameRef.current.blocks.push({
+          x: c * (75 + 10),
+          y: r * (20 + 10),
+          width: 75,
+          height: 20,
+          isDestroyed: false,
+        });
+      }
+    }
+
     canvas.addEventListener("mousemove", mouseMoveHandler);
 
     draw();
@@ -110,9 +154,9 @@ const BlockMain = () => {
 
   return (
     <div className='main-content'>
-      <canvas ref={canvasRef} width={300} height={200} style={{ border: '1px solid #000' }} />
+      <canvas ref={canvasRef} width={410} height={400} style={{ border: '1px solid #000' }} />
     </div>
-  )
-}
+  );
+};
 
 export default BlockMain;
