@@ -134,12 +134,15 @@ const BlockMain = () => {
     }
   };
 
+  // useEffect 内の ball.x, ball.y の初期化部分を以下のように変更
   useEffect(() => {
     const canvas = canvasRef.current;
     const { ball, paddle } = gameRef.current;
 
-    ball.x = canvas.width / 2;
-    ball.y = canvas.height - 30;
+    // ボールの初期位置をランダムに設定
+    ball.x = Math.random() * (canvas.width - 2 * ball.radius) + ball.radius;
+    ball.y = Math.random() * (canvas.height - 2 * ball.radius) + ball.radius;
+
     paddle.x = (canvas.width - paddle.width) / 2;
 
     // ブロックの初期化（例: 5行 x 5列のブロック）
