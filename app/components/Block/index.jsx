@@ -139,8 +139,11 @@ const BlockMain = () => {
     const { ball, paddle } = gameRef.current;
 
     // ボールの初期位置をランダムに設定
-    ball.x = Math.random() * (canvas.width - 2 * ball.radius) + ball.radius;
-    ball.y = Math.random() * (canvas.height - 2 * ball.radius) + ball.radius;
+    ball.x = Math.random() * (canvas.width - 4 * ball.radius) + ball.radius;
+    ball.y = Math.random() * (canvas.height - 4 * ball.radius) + ball.radius;
+
+    ball.dx = 4; // X方向の速度
+    ball.dy = -4;
 
     paddle.x = (canvas.width - paddle.width) / 2;
 
