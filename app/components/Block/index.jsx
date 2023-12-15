@@ -145,7 +145,7 @@ const BlockMain = () => {
     paddle.x = (canvas.width - paddle.width) / 2;
 
     // ブロックの初期化（例: 5行 x 5列のブロック）
-    const blockRowCount = 5;
+    const blockRowCount = 3;
     const blockColumnCount = 5;
     for (let c = 0; c < blockColumnCount; c++) {
       for (let r = 0; r < blockRowCount; r++) {
