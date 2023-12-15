@@ -71,26 +71,31 @@ const BlockMain = () => {
   if (ball.y + ball.dy < ball.radius) {
     ball.dy = -ball.dy;
   } else if (ball.y + ball.dy > canvas.height - ball.radius) {
-    // パドルに当たった場合
-    if (
-      ball.x > paddle.x &&
-      ball.x < paddle.x + paddle.width
-    ) {
-      // パドルの中央に対するボールの相対的な位置を計算
-      const relativePosition = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
+  // パドルに当たった場合
+  if (
+    ball.x > paddle.x &&
+    ball.x < paddle.x + paddle.width
+  ) {
+    // パドルの中央に対するボールの相対的な位置を計算
+    const relativePosition = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
 
-      // 反射角度を計算
-      const reflectionAngle = relativePosition * Math.PI / 4; // 例として PI / 4 をかけていますが、適切な値を調整してください
+    // 反射角度を計算
+    const reflectionAngle = relativePosition * Math.PI / 4;
 
-      // ボールの移動方向を更新
-      ball.dx = Math.sin(reflectionAngle) * 2;
-      ball.dy = -Math.cos(reflectionAngle) * 2;
-    } else {
-      // ゲームオーバーの処理
-      alert('GAME OVER');
-      document.location.reload();
-      return;
-    }
+    // ボールの速度を増加
+    const speedMultiplier = 1;
+
+    // ボールの速度を変更し、速度の向きを維持
+    const speed = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy) * speedMultiplier;
+    ball.dx = Math.sin(reflectionAngle) * speed;
+    ball.dy = -Math.cos(reflectionAngle) * speed;
+  } else {
+    // ゲームオーバーの処理
+    alert('GAME OVER');
+    document.location.reload();
+    return;
+  }
+
   }
 
   // ブロックとの当たり判定
@@ -139,11 +144,11 @@ const BlockMain = () => {
     const { ball, paddle } = gameRef.current;
 
     // ボールの初期位置をランダムに設定
-    ball.x = Math.random() * (canvas.width - 6 * ball.radius) + ball.radius;
-    ball.y = Math.random() * (canvas.height - 6 * ball.radius) + ball.radius;
+    ball.x = Math.random() * (canvas.width - 3 * ball.radius) + ball.radius;
+    ball.y = Math.random() * (canvas.height - 3 * ball.radius) + ball.radius;
 
-    ball.dx = 6; // X方向の速度
-    ball.dy = -6;
+    ball.dx = 3; // X方向の速度
+    ball.dy = -3;
 
     paddle.x = (canvas.width - paddle.width) / 2;
 
