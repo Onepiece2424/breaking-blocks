@@ -95,8 +95,10 @@ const BlockMain = () => {
   }
 
   // ブロックとの当たり判定
+  let allBlocksDestroyed = true; // すべてのブロックが破壊されたかどうかのフラグ
   blocks.forEach((block) => {
     if (!block.isDestroyed) {
+      allBlocksDestroyed = false; // まだ破壊されていないブロックがある
       if (
         ball.x > block.x &&
         ball.x < block.x + block.width &&
@@ -109,12 +111,18 @@ const BlockMain = () => {
     }
   });
 
+  if (allBlocksDestroyed) {
+    // すべてのブロックが破壊された場合、ゲームクリアの処理
+    alert('ゲームクリア！　おめでとうございます😁');
+    document.location.reload();
+    return;
+  }
+
   ball.x += ball.dx;
   ball.y += ball.dy;
 
   requestAnimationFrame(draw);
 };
-
 
   // マウスの位置に応じてパドルの位置を更新
   const mouseMoveHandler = (e) => {
