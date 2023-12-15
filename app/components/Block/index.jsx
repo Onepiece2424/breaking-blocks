@@ -62,13 +62,12 @@ const BlockMain = () => {
   drawPaddle(ctx, paddle, canvas);
   drawBlocks(ctx, blocks);
 
-  if (
-    ball.x + ball.dx > canvas.width - ball.radius ||
-    ball.x + ball.dx < ball.radius
-  ) {
+  // ボールが左右の壁に当たった場合の反射角度を変更
+  if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
     ball.dx = -ball.dx;
   }
 
+  // ボールが上の壁に当たった場合の反射角度を変更
   if (ball.y + ball.dy < ball.radius) {
     ball.dy = -ball.dy;
   } else if (ball.y + ball.dy > canvas.height - ball.radius) {
