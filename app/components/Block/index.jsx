@@ -83,7 +83,7 @@ const BlockMain = () => {
     const reflectionAngle = relativePosition * Math.PI / 4;
 
     // ボールの速度を増加
-    const speedMultiplier = 1;
+    const speedMultiplier = 1.1;
 
     // ボールの速度を変更し、速度の向きを維持
     const speed = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy) * speedMultiplier;
