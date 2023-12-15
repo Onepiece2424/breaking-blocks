@@ -170,7 +170,7 @@ const BlockMain = () => {
 
   return (
     <div className='main-content'>
-      <canvas ref={canvasRef} width={410} height={400} style={{ border: '1px solid #000' }} />
+      <canvas ref={canvasRef} width={410} height={250} style={{ border: '1px solid #000' }} />
     </div>
   );
 };
