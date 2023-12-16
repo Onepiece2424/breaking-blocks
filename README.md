@@ -1,7 +1,7 @@
 ### ブロック崩しゲーム
 https://breaking-blocks-blush.vercel.app/
 
-<img width="432" alt="スクリーンショット 2023-12-16 10 59 09" src="https://github.com/Onepiece2424/breaking-blocks/assets/79039664/bbffc44b-4f85-42bd-b9bd-6cc93f2538ad">
+<img width="381" alt="スクリーンショット 2023-12-16 16 37 41" src="https://github.com/Onepiece2424/breaking-blocks/assets/79039664/f6e3a3af-7522-412b-ac46-d7b1cd004d11">
 
 壁から跳ね返ってくるボールを画面下のパドル（カーソルに連動して動くバー）に当て、ボールを画面上の全てのブロックにあてるゲームです。
 
