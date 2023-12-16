@@ -21,6 +21,7 @@ const BlockMain = () => {
   });
 
   const startTimeRef = useRef(null);
+  const gameStartedRef = useRef(false); // ゲームの開始フラグ
 
   // ボールを描画
   const drawBall = (ctx, ball) => {
@@ -176,18 +177,25 @@ const BlockMain = () => {
 
     canvas.addEventListener("mousemove", mouseMoveHandler);
 
-    startTimeRef.current = new Date();
-
-    draw();
-
     return () => {
       canvas.removeEventListener("mousemove", mouseMoveHandler);
     };
   }, []);
 
+  const startGame = () => {
+    if (!gameStartedRef.current) {
+      gameStartedRef.current = true;
+      startTimeRef.current = new Date();
+      draw();
+    }
+  };
+
   return (
     <div className='main-content'>
       <canvas ref={canvasRef} width={410} height={250} style={{ border: '1px solid #000' }} />
+      <div className='start-button'>
+        <button onClick={startGame}>ゲームスタート</button>
+      </div>
     </div>
   );
 };
