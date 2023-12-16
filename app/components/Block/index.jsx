@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const BlockMain = () => {
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const intervalRef = useRef(null);
   const canvasRef = useRef(null);
   const gameRef = useRef({
     ball: {
@@ -186,12 +189,29 @@ const BlockMain = () => {
     if (!gameStartedRef.current) {
       gameStartedRef.current = true;
       startTimeRef.current = new Date();
+      setIsRunning(true);
       draw();
     }
   };
 
+  // 経過時間の測定
+  useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setElapsedTime((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [isRunning]);
+
   return (
     <div className='main-content'>
+      <p>経過時間: {elapsedTime}秒</p>
       <canvas ref={canvasRef} width={410} height={250} style={{ border: '1px solid #000' }} />
       <div className='start-button'>
         <button onClick={startGame}>ゲームスタート</button>
