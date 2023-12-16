@@ -20,6 +20,8 @@ const BlockMain = () => {
     blocks: [], // ブロックを管理する配列
   });
 
+  const startTimeRef = useRef(null);
+
   // ボールを描画
   const drawBall = (ctx, ball) => {
     ctx.beginPath();
@@ -117,7 +119,12 @@ const BlockMain = () => {
 
   if (allBlocksDestroyed) {
     // すべてのブロックが破壊された場合、ゲームクリアの処理
-    alert('ゲームクリア！　おめでとうございます😁');
+    const endTime = new Date();
+    const timeDiff = endTime - startTimeRef.current;
+    const seconds = Math.floor(timeDiff / 1000);
+
+    alert(`ゲームクリア！　おめでとうございます😁\nクリアにかかった時間：${seconds}秒`);
+
     document.location.reload();
     return;
   }
@@ -168,6 +175,8 @@ const BlockMain = () => {
     }
 
     canvas.addEventListener("mousemove", mouseMoveHandler);
+
+    startTimeRef.current = new Date();
 
     draw();
 
