@@ -155,8 +155,8 @@ const BlockMain = () => {
     ball.x = Math.random() * (canvas.width - 3 * ball.radius) + ball.radius;
     ball.y = Math.random() * (canvas.height - 3 * ball.radius) + ball.radius;
 
-    ball.dx = 3; // X方向の速度
-    ball.dy = -3;
+    ball.dx = 4; // X方向の速度
+    ball.dy = -4;
 
     paddle.x = (canvas.width - paddle.width) / 2;
 
